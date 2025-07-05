@@ -1,0 +1,51 @@
+-----Fıle organization-----
+--Heap Files--
+Records are stored in no particular order,simply append as they arrive
+Structure:
+Pages contain Records,no storing no inherent structure
+Pros:
+Very fast inserts — just append
+Simple implementation
+Cons:
+Searches require full scan unless indexes exist
+Can become fragmented over time
+Use Case,Good for temporary tables, small datasets, or tables with heavy insert traffic
+--Sorted Files--
+Records are stored by a key attribure
+Structure:
+pages arranged so records across pages maintain global order.Internally pages may ve kept sorted as well
+Pros:
+Enables binary search — reduces lookup time to O(log n)
+Efficient range queries (e.g., WHERE id BETWEEN 10 AND 50)
+Cons:
+Inserts are expensive — may require shifting records
+Deletions can cause fragmentation or gaps
+Use Case:Read-heavy tables where range queries or ordered lookups dominateSystems with mostly immutable data
+--Hash Files--
+Records placed into buckets using a hash function
+Structure:
+Buckets map keys to locations,they may contain overflow pages for collisions
+Pros:
+Constant time O(1) lookups for exact matches
+Fast insertions
+Cons:
+Cannot efficiently support range queries (hash destroys order)
+Needs good hash function to avoid collisions
+Rehashing is expensive if resizing needed
+Use Case:Lookup-heavy systems where range queries aren’t needed
+Key-value stores, caches
+--Index Files--
+Seperate files(often b tree)that map keys to location of actual data records
+Structure:
+Index holds key,record pointer pairs.Supports quick navigation to spesific records in primary files.
+Pros:
+Greatly speeds up lookups without changing main file layout
+Multiple indexes can exist on different columns
+
+Cons:
+Overhead for maintaining indexes during inserts/deletes
+Index files consume additional space
+Use Case:
+Essential for large databases where search performance matters
+Primary indexes for sorted files; secondary indexes for arbitrary columns
+

@@ -1,0 +1,20 @@
+-----Command Parsing-----
+Before a sql queary can be exec. the database needs to understand and validate it.
+--Lexical Analysis--
+The raw SQL command is treated as a string of characters.
+The Lexical Analyzer (Tokenizer) breaks this string into smaller units called tokens, such as:
+SELECT name FROM students WHERE age > 20;
+Token Type  | Example
+Keyword     | `SELECT`, `FROM`, `WHERE` |
+Identifier  | `name`, `students`, `age` |
+Operator    | `>`                       |
+Literal     | `20`                      |
+Punctuation | `;`                       |
+Purpose, make the input easier to process for next stages.
+--Syntax parsing--
+Takes the tokens and tries to build a valid syntactic structure, often a parse tree or abstract syntax tree (AST).
+Checks if the command follows the grammar.
+İf grammar is incorrect a syntax error is returned immediatly.
+--Semantic validation--
+Even if command is syntacticly correct,the database Checks logical correctnes like if the table,columns exist.
+

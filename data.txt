@@ -1,0 +1,4 @@
+Name batu
+Surname Okullu
+age 22
+SET asd lol

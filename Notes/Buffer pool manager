@@ -1,0 +1,30 @@
+-----Buffer Pool Manager-----
+In databases, disk storage is slow, but memory (RAM) is fast. The Buffer Pool is a chunk of RAM where frequently accessed data pages are temporarily stored.
+The Buffer Pool Manager (BPM) is responsible for:
+Loading pages from disk into memory when needed
+Evicting pages from memory when space runs out
+Writing "dirty" (modified) pages back to disk
+Ensuring thread-safe access in concurrent systems
+!!!
+Think of it as the memory manager for database pages.
+!!!
+---Page Replacement---
+1)LRU:Evict the page that hasn't been accessed for the longest time
+2)Clock(second chance):Pages arranged in a circular list, each has a "used" bit give second chances before eviction
+3)adaptive algorithms:Combine LRU, frequency counts, access patterns to adapt to workload(lru-k , arc)
+---Dirty Page Handling---
+A dirty page is a page in memory modifiedby a transaction but not yet written to disk.
+Why delay for write? Writing immediatly for every change is inefficent db use WAL so recovery is possible if a crash happens before flush.
+when to write on disk?
+On Eviction: If a dirty page is evicted, it must be written to disk first
+Checkpointing: Periodically, all dirty pages are flushed to disk to reduce recovery time
+Background Threads: BPM may flush dirty pages in the background to smooth I/O
+---Concurency Control---
+Multiple threads accesisgn the buffer pool simultaneously
+the real challange is avoid data races and ensure correctness
+solution:
+Page-level locks Protect individual pages
+Latch-free designs Advanced, use atomic operations to reduce contention
+Pin/Unpin Mechanism:
+Pin: Mark page as in-use, prevents eviction
+Unpin: Done with page, now evictable

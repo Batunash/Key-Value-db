@@ -1,0 +1,30 @@
+-----ACID Properties-----
+A-> Atomic (all or nothing)
+A transaction is treated as a single indivisible uniit
+either all operations succed or none happen
+İmplement:
+Uses undo logs or rollback mechanisms
+If failure occurs mid-transaction:
+Changes are undone using logs.
+No partial updates visible to the system.
+C-> Consistency (0valid state transaction)
+Databse moves from one valid state to another all constrains rules and invariants are preserved.
+İmplement:
+Enforce,Data types,Primary/foreign keys,Unique constraints,Application-level business rules
+Integrity checks after each transaction.
+I->Isolation(concurency control)
+transactions appear to run independently even when executed concurently prevents interference avoids issues.
+İmplement:
+How Implemented:
+Locking mechanisms:Row-level, table-level, shared/exclusive locks
+Multiversion Concurrency Control (MVCC)Readers see consistent snapshots
+Transaction Isolation Levels:
+Read Uncommitted → Least isolated
+Read Committed
+Repeatable Read
+Serializable → Most isolated
+D->Durability(Survive failures)
+Once a transaction is Committed Changes are permanet.
+İmplement:
+WAL-> log changes before applying data
+use of persistent storage

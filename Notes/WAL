@@ -1,0 +1,14 @@
+-----Write Ahead Logging-----
+To ensure data changes are permanent even if system crash.
+Cant do with ram Dısk I/O is slow so wrting every small chane immediatley to disk isnt practical.
+so wal= changes are first written into a sequential log on disk.
+after log record is safely persisted the actual data page memory can be modified and eventually flsuhed to disk
+The log has what change is ahppening(before and after image)and transaction info.
+Log must be writtento disk before corresponding dirty page is written
+Recovery process:
+Read the WAL log from disk.
+Redo committed transactions Reapply changes that were logged but maybe not yet written to the data files.
+Undo uncommitted transactions (optional, depending on system).
+Checkpointing:Dirty Pages Pages in memory modified but not yet flushed to disk.
+Checkpoint is A controlled operation that Flushes all dirty pages to disk.
+Writes a checkpoint record to the log, marking a consistent state.

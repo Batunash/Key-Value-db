@@ -1,0 +1,33 @@
+#include "REPL.h"
+#include <iostream>
+#include <sstream>
+
+void startREPL(KeyValueStore& kv){
+	std::string input;
+	while(true){
+		std::cout<< ">";
+		std::getline(std::cin, input);
+		if(input.empty()) continue;
+
+		std::istringstream iss(input);
+		std::string command,key,value;
+		iss>> command;
+		if(command =="SET"){
+			iss>>key;
+			std::getline(iss,value);
+			if(value.size()>0 && value[0] == ' ') value.erase(0, 1);
+			kv.set(key, value);
+		}
+		else if(command == "GET"){
+			iss>>key;
+			kv.get(key,value);
+		}
+		else if (command == "EXIT"){
+			break;
+		}
+		else{
+			std::cout<<"unknown command.\n";
+		}
+	}
+}
+

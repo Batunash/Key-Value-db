@@ -1,0 +1,16 @@
+----Memory vs Disk trade offs----
+Memory(ram): Extremly fast acces but it is volatile, lose all data when power off. Limited capacity and expensive.
+Disk(ssd/hdd): Slow persisten and has huge capacity also cheap but durable and acces latenct.
+Our goal is making slow and persistent storage(disk)feel like fast and volatile.
+---Buffer managemnt---
+Db uses buffer pools or caches to hold frequently accesed data in memory. when a query request a data:
+1) check if it is already in memory ,(buffer pool) fast
+2) if not, load it from disk into buffer pool slow.
+Eviction polices:
+lru (least recently used)mru,clock algorithms etc. decide what data to evict when memory is full.
+---Page based storage---
+db divide data into fixed-size pages generally 4kb 8kb 16lb.. up to 64 kb per page.
+Efficient to read/write in chunks due to disk I/O characteristics
+Minimizes overhead per disk operation
+Simplifies buffer management (entire pages are cached)
+The smallest unit transfared between disk and memory often a page.

@@ -1,0 +1,29 @@
+-----Execution planning-----
+After query parsed and validated.İnstead of running db creates a asmar Execution plan to procces query.
+--Query optimization--
+A query can often be executed in multiple ways, producing the same result but with different performance.The Query Optimizer analyzes these options and picks the most efficient one.
+Example:
+SELECT * FROM students WHERE age > 20;
+Two possible paths:
+Full Table Scan: Read every row, check age.Index Scan: Use an index on age to find matching rows faster.
+Goal: Find the fastest, most resource-efficient path.
+--Cost based decisions--
+The optimizer uses cost-based analysis, meaning:
+It estimates the "cost" (time, I/O, CPU) of each possible execution plan.
+Factors include:            Table size
+Index availability
+Data distribution (e.g., are most ages > 20 or only a few?)
+System stats (memory, CPU load)
+The Optimizer picks the plan with the lowest estimated cost, not just the most obvious one.
+Example:
+    Small table → Full scan might be faster.
+    Huge table with good indexes → Index scan is better.
+--Index Usage--
+Indexes are special data structures to spped up lookups.
+Indexe exist,few row macthc,use ındex scan(fast)
+Index exist,many rows match,full table scan may be faster.
+no suitable ındex full table scan required.
+
+
+
+

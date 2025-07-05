@@ -1,0 +1,71 @@
+-----Hash tables vs B TRees-----
+---Hash tables---
+hash table is  a key-value pairs data structure
+it provides o(1) inster search and delete. it uses hash function to map keys to indices in a underlaying array. keys are unique and used to retrive associted values quickly.
+Hash Function:Converts a key into an integer index in the array. It should uniformly distribute keys to reduce collisions.
+Buckets/Slots:Positions in an array where entries (key-value pairs) are stored.
+Collision Handling:When two keys map to the same index, a method is used to handle it (e.g., chaining, open addressing).
+--İmportant hash methods--
+Hash function:
+Example: sum of ASCII codes of characters modulo table capacity.
+Must be fast and distribute keys evenly.
+Insertion (set):
+Hash the key.
+If the slot is free or deleted, insert there.
+If occupied with a different key, move forward until free slot found.
+Search (get):
+Hash the key.
+Check slots linearly until the key is found or an empty slot is reached.
+Deletion (remove):
+Mark the entry as deleted (lazy deletion).
+Avoids breaking probe chains during search.
+---B Trees---
+A B-Tree is a self-balancing tree data structure designed for systems that read/write large blocks of data — especially databases and file systems.
+It keeps data sorted and allows searches, sequential access, insertions, and deletions in O(log n) time.
+Unlike binary trees, B-Trees can have multiple keys and children per node (high branching factor), reducing tree height.
+Order (t):Minimum degree, defines range for number of children (between t and 2t).
+Node structure:Each node contains multiple keys and pointers to child nodes.
+Balanced:All leaf nodes are at the same depth — tree height is kept minimal.
+Disk-optimized:Nodes correspond to disk blocks, minimizing disk I/O by reducing tree height and number of accesses.
+Supports range queries:In-order traversal over keys enables efficient range searches and sequential access.
+--Why b tree--
+Efficient disk utilization: Because nodes hold many keys, the tree height is shallow, so fewer disk reads are required during search or update.
+Range queries: Can quickly traverse sequential keys across nodes.
+Good for databases/filesystems: Used extensively in database indexes (e.g., MySQL, Oracle) and file systems (e.g., NTFS, HFS+).
+All searh insert and delete takes o(log n) time guaranteed.
+--Node structure--
+Each node contains:
+Between t-1 and 2t-1 keys
+Between t and 2t children (if not a leaf)
+Keys are stored in sorted order within the node
+Children pointers split key ranges
+--Why b trees excel for disk based store--
+Disk reads/writes are costly and slow compared to memory access.
+By having a high branching factor (many keys per node), the tree height remains low.
+This means fewer disk I/O operations per query.
+Nodes correspond to disk blocks, so reading/writing one node loads multiple keys at once.
+---LMS trees---
+Log structured merge tree:is a data structure designed to optimize write performance by batching writes and organizing data across multiple levels.
+İnstead of updating data in place, writes are appended sequentially to a memtable (in-memory structure), then periodically flushed and merged to disk in sorted files.
+Widely used in modern NoSQL databases like LevelDB, RocksDB, Cassandra, HBase.
+Memtable:Fast in-memory sorted structure (e.g., balanced tree or skiplist) buffering writes.
+Immutable SSTables:Sorted files stored on disk, created by flushing memtable.
+Compaction/Merging:Background process that merges multiple SSTables to maintain read performance and free space.
+Writes are appended sequentially in memory and disk, avoiding random I/O that slows down traditional B-Trees.
+Disk writes are batched and sorted, minimizing expensive random disk writes.
+Suitable for workloads with high write throughput.
+--Basic workflow--
+Write (Insert/Update/Delete):
+    Added to the in-memory memtable.
+    Once memtable is full, it’s flushed to disk as a new SSTable.
+Read:
+    Check memtable first (fast in-memory).
+    Check recent SSTables, then older SSTables in order.
+    Bloom filters often used to quickly skip SSTables that don’t contain the key.
+Compaction:
+    Periodically, multiple SSTables are merged into larger SSTables.
+    Eliminates deleted or overwritten entries.
+    Keeps disk usage efficient and read performance stable.
+--Pros and cons--
+High write throughput,Good read performance (with bloom filters and compactions),Efficient space management,Scales well with large datasets
+Read amplification,Write amplification,Complexity
